@@ -12,4 +12,10 @@ public class NoSuchBeanException extends RuntimeException {
 	public NoSuchBeanException(String msg){
 		super(msg);
 	}
+	public NoSuchBeanException(String msg, Throwable cause){
+		super(msg, cause);
+	}
+	public NoSuchBeanException(Throwable cause){
+		super(cause);
+	}
 }
