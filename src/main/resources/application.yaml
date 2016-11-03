@@ -1,0 +1,26 @@
+#spring properties
+spring:
+  messagee:
+    basename: messages
+    cache-seconds: -1
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://localhost/tix?useLegacyDatetimeCode=false&serverTimezone=Europe/Minsk&useSSL=false
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  view: {prefix: /static/, suffix: .html}
+
+logging:
+  level:
+    root: INFO
+
+server:
+  port: ${port:5000}
+
+---
+#application properties
+container:
+  handle-static: true
+
+...

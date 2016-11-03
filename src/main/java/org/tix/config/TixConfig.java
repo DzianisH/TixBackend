@@ -1,9 +1,11 @@
-package org.tix;
+package org.tix.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -12,7 +14,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 
 @Configuration
-public class ApplicationConfig extends WebMvcConfigurerAdapter {
+public class TixConfig extends WebMvcConfigurerAdapter {
+
+	@Value("${container.handle-static}")
+	private boolean handleStatic;
 
 	@Bean
 	public ViewResolver getViewResolver() {
@@ -25,6 +30,6 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void configureDefaultServletHandling(
 			DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
+		if(handleStatic) configurer.enable();
 	}
 }

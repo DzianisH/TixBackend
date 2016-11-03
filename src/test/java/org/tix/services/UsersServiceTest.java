@@ -26,13 +26,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class UsersServiceTest {
 	@InjectMocks
-	private UserService service;
+	private UserServiceImpl service;
 	@Mock
 	private UserRepository repository;
 
 	private List<User> emptyUserList = Collections.emptyList();
-	private Integer id = 5;
-	private User dummyUser = new User(id);
+	private Long id = 5L;
+	private User dummyUser = new User().setId(id);
 
 	@Test
 	public void testGetUsers_repositoryFindAllShouldInvokesOnce() throws Exception {
@@ -63,7 +63,7 @@ public class UsersServiceTest {
 
 	@Test(expected = NoSuchBeanException.class)
 	public void	testGetUser_shouldThrowNowSuchBeanExceptionOnRowIdNotExists() throws Exception{
-		when(repository.findOne(any(Integer.class))).thenReturn(null);
+		when(repository.findOne(any(Long.class))).thenReturn(null);
 		service.getUser(id);
 	}
 }

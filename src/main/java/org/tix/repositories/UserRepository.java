@@ -8,5 +8,5 @@ import org.tix.domain.User;
  * Created by Dzianis_Haurylavets on 27.10.2016.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Long>{
 }

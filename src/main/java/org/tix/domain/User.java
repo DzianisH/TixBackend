@@ -1,5 +1,6 @@
 package org.tix.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,50 +12,56 @@ import javax.persistence.Id;
 public class User {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	@Column(nullable = false)
+	private Long id;
+	@Column(nullable = false)
 	private Integer color;
+	@Column(nullable = false, unique = true, length = 31)
 	private String login;
 
 	public User(){}
-	public User(Integer id){
-		this.id = id;
+	public User(Integer color, String login){
+		this.color = color;
+		this.login = login;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public User setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public Integer getColor() {
 		return color;
 	}
 
-	public void setColor(Integer color) {
+	public User setColor(Integer color) {
 		this.color = color;
+		return this;
 	}
 
 	public String getLogin() {
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public User setLogin(String login) {
 		this.login = login;
+		return this;
 	}
 
 	@Override
 	public String toString(){
-		return new StringBuilder().append("User:{id: ").append(id)
-				.append(", login:").append(login)
-				.append(", color: ").append(color).append("}")
-				.toString();
+		return "User:{id: " + id +
+				", login:" + login +
+				", color: " + color + "}";
 	}
 
 	@Override
 	public int hashCode(){
-		return id;
+		return (int)(long)id;
 	}
 
 	@Override
