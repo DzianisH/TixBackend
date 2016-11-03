@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.tix.domain.User;
+import org.tix.domain.Avatar;
 import org.tix.exceptions.NoSuchBeanException;
-import org.tix.repositories.UserRepository;
+import org.tix.repositories.AvatarRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,46 +24,46 @@ import static org.mockito.Mockito.when;
  * Created by Dzianis_Haurylavets on 27.10.2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class UsersServiceTest {
+public class AvatarServiceTest {
 	@InjectMocks
-	private UserServiceImpl service;
+	private AvatarServiceImpl service;
 	@Mock
-	private UserRepository repository;
+	private AvatarRepository repository;
 
-	private List<User> emptyUserList = Collections.emptyList();
+	private List<Avatar> emptyAvatarList = Collections.emptyList();
 	private Long id = 5L;
-	private User dummyUser = new User().setId(id);
+	private Avatar dummyAvatar = new Avatar().setId(id);
 
 	@Test
-	public void testGetUsers_repositoryFindAllShouldInvokesOnce() throws Exception {
-		when(repository.findAll()).thenReturn(emptyUserList);
-		List<User> answer = service.getUsers();
+	public void testGetAvatarss_repositoryFindAllShouldInvokesOnce() throws Exception {
+		when(repository.findAll()).thenReturn(emptyAvatarList);
+		List<Avatar> answer = service.getAvatars();
 
-		assertEquals(emptyUserList, answer);
+		assertEquals(emptyAvatarList, answer);
 		verify(repository, times(1)).findAll();
 	}
 
 	@Test
-	public void	testGetUsers_shouldReturnEmptyListOnNoUsers() throws Exception{
+	public void	testGetAvatars_shouldReturnEmptyListOnNoAvatars() throws Exception{
 		when(repository.findAll()).thenReturn(null);
-		List<User> answer = service.getUsers();
+		List<Avatar> answer = service.getAvatars();
 
 		assertNotNull(answer);
 		assertEquals(answer.size(), 0);
 	}
 
 	@Test
-	public void testGetUser_repositoryFindShouldInvokesOnce() throws Exception{
-		when(repository.findOne(eq(id))).thenReturn(dummyUser);
-		User answer = service.getUser(id);
+	public void testGetAvatar_repositoryFindShouldInvokesOnce() throws Exception{
+		when(repository.findOne(eq(id))).thenReturn(dummyAvatar);
+		Avatar answer = service.getAvatar(id);
 
-		assertEquals(dummyUser, answer);
+		assertEquals(dummyAvatar, answer);
 		verify(repository, times(1)).findOne(id);
 	}
 
 	@Test(expected = NoSuchBeanException.class)
-	public void	testGetUser_shouldThrowNowSuchBeanExceptionOnRowIdNotExists() throws Exception{
+	public void	testGetAvatar_shouldThrowNowSuchBeanExceptionOnRowIdNotExists() throws Exception{
 		when(repository.findOne(any(Long.class))).thenReturn(null);
-		service.getUser(id);
+		service.getAvatar(id);
 	}
 }

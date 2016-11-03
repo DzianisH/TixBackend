@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Created by Dzianis_Haurylavets on 27.10.2016.
  */
 @Entity
-public class User {
+public class Avatar {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false)
@@ -19,8 +19,8 @@ public class User {
 	@Column(nullable = false, unique = true, length = 31)
 	private String login;
 
-	public User(){}
-	public User(Integer color, String login){
+	public Avatar(){}
+	public Avatar(Integer color, String login){
 		this.color = color;
 		this.login = login;
 	}
@@ -29,7 +29,7 @@ public class User {
 		return id;
 	}
 
-	public User setId(Long id) {
+	public Avatar setId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -38,7 +38,7 @@ public class User {
 		return color;
 	}
 
-	public User setColor(Integer color) {
+	public Avatar setColor(Integer color) {
 		this.color = color;
 		return this;
 	}
@@ -47,14 +47,14 @@ public class User {
 		return login;
 	}
 
-	public User setLogin(String login) {
+	public Avatar setLogin(String login) {
 		this.login = login;
 		return this;
 	}
 
 	@Override
 	public String toString(){
-		return "User:{id: " + id +
+		return "Avatar:{id: " + id +
 				", login:" + login +
 				", color: " + color + "}";
 	}
@@ -66,10 +66,10 @@ public class User {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof User && equals((User) obj);
+		return obj instanceof Avatar && equals((Avatar) obj);
 	}
 
-	public boolean equals(User user){
-		return id.equals(user.id);
+	public boolean equals(Avatar avatar){
+		return id.equals(avatar.id);
 	}
 }

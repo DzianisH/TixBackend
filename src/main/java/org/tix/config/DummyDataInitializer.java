@@ -3,8 +3,8 @@ package org.tix.config;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.tix.domain.User;
-import org.tix.repositories.UserRepository;
+import org.tix.domain.Avatar;
+import org.tix.repositories.AvatarRepository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -18,11 +18,11 @@ import java.util.List;
 public class DummyDataInitializer {
 	private static final Logger LOG = Logger.getLogger(DummyDataInitializer.class);
 
-	private final UserRepository userRepository;
+	private final AvatarRepository avatarRepository;
 
 	@Inject
-	public DummyDataInitializer(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public DummyDataInitializer(AvatarRepository avatarRepository) {
+		this.avatarRepository = avatarRepository;
 	}
 
 	@Value("${spring.datasource.url}")
@@ -32,19 +32,19 @@ public class DummyDataInitializer {
 	public void initDummyBeans(){
 		LOG.info("Injecting dummy data to " + databaseUri);
 
-		List<User> dummyUsers = userRepository.save(Arrays.asList(
-				new User(0xff0000, "r00t"),
-				new User(0x00ff00, "karamber"),
-				new User(0x0000ff, "godfather"),
-				new User(0x0ff000, "samurai"),
-				new User(0x000ff0, "belka99"),
-				new User(0xf0000f, "broadcaster")
+		List<Avatar> dummyAvatars = avatarRepository.save(Arrays.asList(
+				new Avatar(0xff0000, "r00t"),
+				new Avatar(0x00ff00, "karamber"),
+				new Avatar(0x0000ff, "godfather"),
+				new Avatar(0x0ff000, "samurai"),
+				new Avatar(0x000ff0, "belka99"),
+				new Avatar(0xf0000f, "broadcaster")
 		));
 
 		if(LOG.isDebugEnabled()){
 			StringBuilder sb = new StringBuilder();
-			sb.append("New users: ");
-			dummyUsers.forEach(user -> sb.append(user).append("; "));
+			sb.append("New avatars: ");
+			dummyAvatars.forEach(avatar -> sb.append(avatar).append("; "));
 			LOG.debug(sb.toString());
 		}
 	}
