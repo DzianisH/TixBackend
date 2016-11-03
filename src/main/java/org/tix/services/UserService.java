@@ -13,5 +13,7 @@ public interface UserService {
 
 	List<User> getUsers();
 
-	User createOrUpdateUser(User user);
+	User createUser(User user);
+
+	void deleteUser(Long id) throws NoSuchBeanException;
 }

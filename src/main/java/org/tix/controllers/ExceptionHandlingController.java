@@ -5,8 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
-import org.tix.responses.GenericMessage;
+import org.tix.messages.GenericMessage;
 
 /**
  * Created by Dzianis_Haurylavets on 03.11.2016.
@@ -16,11 +17,18 @@ public class ExceptionHandlingController {
 	private static final Logger LOG = Logger.getLogger(ExceptionHandlingController.class);
 
 	@ExceptionHandler(NoSuchBeanException.class)
-	public ResponseEntity<GenericMessage<String>> handleNotFound(NoSuchBeanException exp){
-
+	public ResponseEntity<?> handleNotFound(NoSuchBeanException exp){
 		return new ResponseEntity<>(
 				new GenericMessage<>(exp.getMessage()),
 				HttpStatus.NOT_FOUND
+		);
+	}
+
+	@ExceptionHandler(InvalidBeanException.class)
+	public ResponseEntity<?> handleInvalidRequest(InvalidBeanException exp){
+		return new ResponseEntity<>(
+				new GenericMessage<>(exp.getMessage()),
+				HttpStatus.BAD_REQUEST
 		);
 	}
 
