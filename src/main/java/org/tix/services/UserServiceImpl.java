@@ -10,6 +10,8 @@ import org.tix.repositories.UserRepository;
 import javax.inject.Inject;
 import javax.validation.ConstraintDeclarationException;
 
+import static org.tix.utils.ObjectUtils.same;
+
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
  */
@@ -39,7 +41,16 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public boolean validate(User user) {
+		return user != null
+				&& user.getId() != null
+				&& same(user, repository.findOne(user.getId()))
+			;
+	}
+
+	@Override
 	public User createUser(User user) {
+		if(user == null) throw new InvalidBeanException("User can't be null");
 		user.setId(null);
 		try {
 			return repository.save(user);

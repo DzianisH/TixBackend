@@ -1,9 +1,14 @@
 package org.tix.domain;
 
+import org.tix.services.UserService;
+
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
@@ -18,6 +23,10 @@ public class User {
 	@Column(length = 31, nullable = false)
 	private String password;
 
+	// can't deal with serialisation issue ;c
+//	private List<Avatar> avatarList;
+
+
 	public User(){}
 	public User(String email, String password){
 		this.email = email;
@@ -28,24 +37,27 @@ public class User {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public User setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public User setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public User setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
 	@Override
@@ -66,6 +78,8 @@ public class User {
 	}
 
 	public boolean equals(User user){
-		return this == user || id != null && id.equals(user.id);
+		return this == user || same(id, user.id)
+				&& same(email, user.email)
+				&& same(password, user.password);
 	}
 }

@@ -10,6 +10,7 @@ import org.tix.repositories.AvatarRepository;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintDeclarationException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,14 +38,26 @@ public class AvatarServiceImpl implements AvatarService {
 	}
 
 	@Override
-	public List<Avatar> getAvatars(){
-		List<Avatar> avatars = repository.findAll();
-		if(avatars != null) return avatars;
-		return Collections.emptyList();
+	public boolean isAvatarLoginFree(String login){
+		return repository.findByLogin(login) == null;
 	}
 
 	@Override
-	public Avatar createAvatar(Avatar avatar) throws ConstraintDeclarationException{
+	public List<Avatar> getAvatarList(){
+		List<Avatar> avatars = repository.findAll();
+		if(avatars != null) return avatars;
+		return new ArrayList<>();
+	}
+
+	@Override
+	public List<Avatar> getUserAvatarList(Integer userId){
+		List<Avatar> avatars = repository.findAllByUserId(userId);
+		if(avatars != null) return avatars;
+		return new ArrayList<>();
+	}
+
+	@Override
+	public Avatar unsafeCreateAvatar(Avatar avatar) throws ConstraintDeclarationException{
 		avatar.setId(null);
 		try {
 			return repository.save(avatar);

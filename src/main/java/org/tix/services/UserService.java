@@ -8,6 +8,7 @@ import org.tix.domain.User;
 public interface UserService {
 	boolean isEmailFree(String email);
 	User getUser(String email, String password);
+	boolean validate(User user);
 	User createUser(User user);
 	void deleteUser(User user);
 }

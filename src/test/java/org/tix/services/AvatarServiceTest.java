@@ -37,7 +37,7 @@ public class AvatarServiceTest {
 	@Test
 	public void testGetAvatarss_repositoryFindAllShouldInvokesOnce() throws Exception {
 		when(repository.findAll()).thenReturn(emptyAvatarList);
-		List<Avatar> answer = service.getAvatars();
+		List<Avatar> answer = service.getAvatarList();
 
 		assertEquals(emptyAvatarList, answer);
 		verify(repository, times(1)).findAll();
@@ -46,7 +46,7 @@ public class AvatarServiceTest {
 	@Test
 	public void	testGetAvatars_shouldReturnEmptyListOnNoAvatars() throws Exception{
 		when(repository.findAll()).thenReturn(null);
-		List<Avatar> answer = service.getAvatars();
+		List<Avatar> answer = service.getAvatarList();
 
 		assertNotNull(answer);
 		assertEquals(answer.size(), 0);

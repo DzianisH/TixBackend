@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
+import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.PermissionDeniedException;
 import org.tix.messages.GenericMessage;
 
 /**
@@ -29,6 +32,22 @@ public class ExceptionHandlingController {
 		return new ResponseEntity<>(
 				new GenericMessage<>(exp.getMessage()),
 				HttpStatus.BAD_REQUEST
+		);
+	}
+
+	@ExceptionHandler(BeanAlreadyInUse.class)
+	public ResponseEntity<?> handlePermissionsDenied(BeanAlreadyInUse exp){
+		return new ResponseEntity<>(
+				new GenericMessage<>(exp.getMessage()),
+				HttpStatus.LOCKED
+		);
+	}
+
+	@ExceptionHandler({NotAuthorisedException.class, PermissionDeniedException.class})
+	public ResponseEntity<?> handle(RuntimeException exp){
+		return new ResponseEntity<>(
+				new GenericMessage<>(exp.getMessage()),
+				HttpStatus.FORBIDDEN
 		);
 	}
 

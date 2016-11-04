@@ -9,11 +9,14 @@ import java.util.List;
  * Created by Dzianis_Haurylavets on 03.11.2016.
  */
 public interface AvatarService {
+	boolean isAvatarLoginFree(String login);
+
 	Avatar getAvatar(Long id) throws NoSuchBeanException;
 
-	List<Avatar> getAvatars();
+	List<Avatar> getAvatarList();
+	List<Avatar> getUserAvatarList(Integer userId);
 
-	Avatar createAvatar(Avatar avatar);
+	Avatar unsafeCreateAvatar(Avatar avatar);
 
 	void unsafeDeleteAvatar(Long id) throws NoSuchBeanException;
 }

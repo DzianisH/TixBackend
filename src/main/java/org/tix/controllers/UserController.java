@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tix.domain.User;
 import org.tix.services.UserService;
@@ -19,7 +20,6 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 	private final UserService userService;
-
 	private final UserSessionService sessionService;
 
 	@Inject
@@ -36,11 +36,24 @@ public class UserController {
 
 	@GetMapping("/api/user")
 	public ResponseEntity<User> getYourUser(){
-		return ResponseEntity.ok(new  User());
+		return ResponseEntity.ok(sessionService.getCurrentUser());
 	}
 
 	@PostMapping("/api/user")
-	public ResponseEntity<User> createUser(@RequestBody @Valid User user){
-		return ResponseEntity.ok(userService.createUser(user));
+	public ResponseEntity<User> register(@RequestParam @Valid User user){
+		user = userService.createUser(user);
+		return login(user.getEmail(), user.getPassword());
+	}
+
+	@PostMapping("/api/login")
+	public ResponseEntity<User> login(
+			@RequestParam String email,  @RequestParam String password){
+		return ResponseEntity.ok(sessionService.relogin(email, password));
+	}
+
+	@PostMapping("/api/logout")
+	public ResponseEntity<Boolean> logout(){
+		sessionService.logout();
+		return ResponseEntity.ok(true);
 	}
 }
