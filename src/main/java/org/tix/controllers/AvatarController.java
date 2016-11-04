@@ -41,7 +41,7 @@ public class AvatarController {
 	}
 
 	@PostMapping("/api/avatar")
-	public ResponseEntity<Avatar> login(@RequestBody @Valid Avatar avatar){
+	public ResponseEntity<Avatar> createAvatar(@RequestBody @Valid Avatar avatar){
 		return ResponseEntity.ok(service.createAvatar(avatar));
 	}
 

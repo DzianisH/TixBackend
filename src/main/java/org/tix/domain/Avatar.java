@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by Dzianis_Haurylavets on 27.10.2016.
@@ -18,11 +21,15 @@ public class Avatar {
 	private Integer color;
 	@Column(nullable = false, unique = true, length = 31)
 	private String login;
+	@ManyToOne
+	@JoinColumn
+	private User user;
 
 	public Avatar(){}
-	public Avatar(Integer color, String login){
+	public Avatar(Integer color, String login, User user){
 		this.color = color;
 		this.login = login;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -54,8 +61,9 @@ public class Avatar {
 
 	@Override
 	public String toString(){
-		return "Avatar:{id: " + id +
-				", login:" + login +
+		return "{id: " + id +
+				", user_id: " + user.getId() +
+				", login: '" + login + "' " +
 				", color: " + color + "}";
 	}
 
@@ -71,5 +79,13 @@ public class Avatar {
 
 	public boolean equals(Avatar avatar){
 		return id.equals(avatar.id);
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
