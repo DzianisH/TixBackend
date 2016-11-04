@@ -57,7 +57,7 @@ public class AvatarServiceImpl implements AvatarService {
 	}
 
 	@Override
-	public Avatar unsafeCreateAvatar(Avatar avatar) throws ConstraintDeclarationException{
+	public Avatar unsafeCreateAvatar(Avatar avatar) throws InvalidBeanException{
 		avatar.setId(null);
 		try {
 			return repository.save(avatar);
