@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tix.domain.User;
+import org.tix.exceptions.InvalidBeanException;
+import org.tix.exceptions.NoSuchBeanException;
+import org.tix.exceptions.NotAuthorisedException;
 import org.tix.services.UserService;
 import org.tix.services.UserSessionService;
 
@@ -35,19 +38,19 @@ public class UserController {
 	}
 
 	@GetMapping("/api/user")
-	public ResponseEntity<User> getYourUser(){
+	public ResponseEntity<User> getYourUser() throws NotAuthorisedException {
 		return ResponseEntity.ok(sessionService.getCurrentUser());
 	}
 
 	@PostMapping("/api/user")
-	public ResponseEntity<User> register(@RequestParam @Valid User user){
+	public ResponseEntity<User> register(@RequestParam @Valid User user) throws InvalidBeanException, NoSuchBeanException {
 		user = userService.createUser(user);
 		return login(user.getEmail(), user.getPassword());
 	}
 
 	@PostMapping("/api/login")
 	public ResponseEntity<User> login(
-			@RequestParam String email,  @RequestParam String password){
+			@RequestParam String email,  @RequestParam String password) throws NoSuchBeanException {
 		return ResponseEntity.ok(sessionService.relogin(email, password));
 	}
 

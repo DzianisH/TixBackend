@@ -55,7 +55,7 @@ public class AvatarServiceImplTest {
 	}
 
 	@Test
-	public void	testGetAvatar_shouldReturnEmptyListOnNoAvatars() throws Exception{
+	public void	testGetAvatarList_shouldReturnEmptyListOnNoAvatars() throws Exception{
 		when(repository.findAll()).thenReturn(null);
 		List<Avatar> answer = service.getAvatarList();
 
@@ -104,6 +104,5 @@ public class AvatarServiceImplTest {
 		}
 		verify(repository, times(1)).delete(id);
 	}
-
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Created by Dzianis_Haurylavets on 04.11.2016.
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Request bean validation failed")
-public class InvalidBeanException extends RuntimeException {
+public class InvalidBeanException extends Exception {
 	public InvalidBeanException(){}
 	public InvalidBeanException(String msg){
 		super(msg);

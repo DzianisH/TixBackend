@@ -1,15 +1,17 @@
 package org.tix.services;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.tix.domain.User;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.repositories.UserRepository;
-import org.tix.utils.ObjectUtils;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintDeclarationException;
+
+import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
@@ -43,12 +45,12 @@ public class UserServiceImpl implements UserService{
 	public boolean validate(User user) {
 		return user != null
 				&& user.getId() != null
-				&& ObjectUtils.equals(user, repository.findOne(user.getId()))
+				&& same(user, repository.findOne(user.getId()))
 			;
 	}
 
 	@Override
-	public User createUser(User user) {
+	public User createUser(User user) throws InvalidBeanException {
 		if(user == null) throw new InvalidBeanException("User can't be null");
 		user.setId(null);
 		try {
@@ -63,7 +65,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		repository.delete(user);
+	public void deleteUser(Integer id) throws NoSuchBeanException {
+		try {
+			repository.delete(id);
+		} catch (EmptyResultDataAccessException ex){
+			throw new NoSuchBeanException("Can't find User with id=" + id);
+		}
 	}
 }

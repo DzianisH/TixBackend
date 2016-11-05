@@ -1,6 +1,7 @@
 package org.tix.services;
 
 import org.tix.domain.Avatar;
+import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface AvatarService {
 	List<Avatar> getAvatarList();
 	List<Avatar> getUserAvatarList(Integer userId);
 
-	Avatar unsafeCreateAvatar(Avatar avatar);
+	Avatar unsafeCreateAvatar(Avatar avatar) throws InvalidBeanException;
 
 	void unsafeDeleteAvatar(Long id) throws NoSuchBeanException;
 }

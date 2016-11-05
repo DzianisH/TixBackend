@@ -1,7 +1,6 @@
 package org.tix.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.tix.utils.ObjectUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 27.10.2016.
@@ -23,6 +24,7 @@ public class Avatar {
 	private Integer color;
 	@Column(nullable = false, unique = true, length = 31)
 	private String login;
+	// owner of particular avatar
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn
@@ -89,10 +91,10 @@ public class Avatar {
 	}
 
 	public boolean equals(Avatar avatar){
-		return avatar == this || ObjectUtils.equals(id, avatar.id)
-				&& ObjectUtils.equals(login, avatar.login)
-				&& ObjectUtils.equals(color, avatar.color)
-				&& ObjectUtils.equals(user, avatar.user);
+		return avatar == this || same(id, avatar.id)
+				&& same(login, avatar.login)
+				&& same(color, avatar.color)
+				&& same(user, avatar.user);
 	}
 
 }

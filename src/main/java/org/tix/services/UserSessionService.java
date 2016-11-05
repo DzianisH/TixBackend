@@ -6,6 +6,7 @@ import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.PermissionDeniedException;
 
 import java.util.List;
 
@@ -15,23 +16,23 @@ import java.util.List;
 public interface UserSessionService {
 
 	boolean isLoggedIn();
-	boolean isAvatared();
+	boolean isAvatared() throws NotAuthorisedException;
 
-	User getCurrentUser();
-	User relogin(String email, String password);
+	User getCurrentUser() throws NotAuthorisedException;
+	Avatar getActiveAvatar() throws NotAuthorisedException;
+	User relogin(String email, String password) throws NoSuchBeanException;
 	void logout();
 
 	Avatar createAvatar(Avatar avatar)
 			throws InvalidBeanException, BeanAlreadyInUse, NotAuthorisedException;
 
-	Avatar useAvatar(Long id);
-	Avatar useAvatar(Avatar avatar);
+	Avatar useAvatar(Long id) throws NoSuchBeanException, NotAuthorisedException, PermissionDeniedException;
+	Avatar useAvatar(Avatar avatar) throws NotAuthorisedException, PermissionDeniedException;
 
-	boolean isAvatarBelongToCurrentUser(Avatar avatar);
-	boolean isAvatarBelongToCurrentUser(Long id);
+	boolean isAvatarBelongToCurrentUser(Avatar avatar) throws NotAuthorisedException;
+	boolean isAvatarBelongToCurrentUser(Long id) throws NotAuthorisedException, NoSuchBeanException;
 
-	Avatar getActiveAvatar();
-	List<Avatar> getUserAvatarList();
+	List<Avatar> getUserAvatarList() throws NotAuthorisedException;
 
-	void dropAvatar(Avatar avatar) throws NoSuchBeanException;
+	void dropAvatar(Avatar avatar) throws NoSuchBeanException, PermissionDeniedException;
 }

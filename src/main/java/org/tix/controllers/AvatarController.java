@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tix.domain.Avatar;
+import org.tix.exceptions.InvalidBeanException;
+import org.tix.exceptions.NoSuchBeanException;
+import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.PermissionDeniedException;
 import org.tix.messages.SuccessMessage;
 import org.tix.services.AvatarService;
 import org.tix.services.UserSessionService;
@@ -37,7 +41,7 @@ public class AvatarController {
 	}
 
 	@GetMapping("/api/avatar/{id}")
-	public ResponseEntity<Avatar> getAvatar(@PathVariable Long id){
+	public ResponseEntity<Avatar> getAvatar(@PathVariable Long id) throws NoSuchBeanException {
 		return ResponseEntity.ok(avatarService.getAvatar(id));
 	}
 
@@ -47,13 +51,13 @@ public class AvatarController {
 	}
 
 	@PostMapping("/api/avatar")
-	public ResponseEntity<Avatar> createAvatar(@RequestParam @Valid Avatar avatar){
+	public ResponseEntity<Avatar> createAvatar(@RequestParam @Valid Avatar avatar) throws InvalidBeanException, NotAuthorisedException {
 		return ResponseEntity.ok(sessionService.createAvatar(avatar));
 	}
 
 	@DeleteMapping({"/api/avatar/{id}", "/api/user/avatar/{id}"})
 	public ResponseEntity<SuccessMessage<String>>
-			dropAvatar(@PathVariable Long id){
+			dropAvatar(@PathVariable Long id) throws NoSuchBeanException, PermissionDeniedException {
 		Avatar avatar = avatarService.getAvatar(id);
 		sessionService.dropAvatar(avatar);
 
@@ -61,19 +65,18 @@ public class AvatarController {
 	}
 
 	@GetMapping("/api/user/avatar")
-	public ResponseEntity<List<Avatar>> getYourAvatarList(){
-		System.out.println("AAAAAAAAAAAAAAAAAA");
+	public ResponseEntity<List<Avatar>> getYourAvatarList() throws NotAuthorisedException {
 		return ResponseEntity.ok(sessionService.getUserAvatarList());
 	}
 
 	@GetMapping("/api/user/avatar/active")
-	public ResponseEntity<Avatar> getYourAvatar(){
+	public ResponseEntity<Avatar> getYourAvatar() throws NotAuthorisedException {
 		return ResponseEntity.ok(sessionService.getActiveAvatar());
 	}
 
 	// TODO: May be PUT only?
 	@RequestMapping(value = "/api/user/avatar/active", method = {RequestMethod.POST, RequestMethod.PUT})
-	public ResponseEntity<Avatar> setYourAvatar(@RequestParam Long id){
+	public ResponseEntity<Avatar> setYourAvatar(@RequestParam Long id) throws NoSuchBeanException, PermissionDeniedException {
 		return ResponseEntity.ok(sessionService.useAvatar(id));
 	}
 }

@@ -32,9 +32,7 @@ public class AvatarServiceImpl implements AvatarService {
 		Avatar avatar = repository.findOne(id);
 		if(avatar != null) return avatar;
 
-		final String msg = "Can't find Avatar with id=" + id;
-		LOG.warn(msg);
-		throw new NoSuchBeanException(msg);
+		throw new NoSuchBeanException("Can't find Avatar with id=" + id);
 	}
 
 	@Override
@@ -58,6 +56,7 @@ public class AvatarServiceImpl implements AvatarService {
 
 	@Override
 	public Avatar unsafeCreateAvatar(Avatar avatar) throws InvalidBeanException{
+		if(avatar == null) throw new InvalidBeanException("Avatar can't be null");
 		avatar.setId(null);
 		try {
 			return repository.save(avatar);
@@ -75,9 +74,7 @@ public class AvatarServiceImpl implements AvatarService {
 		try {
 			repository.delete(id);
 		} catch (EmptyResultDataAccessException ex){
-			final String msg = "Can't find Avatar with id=" + id;
-			LOG.warn(msg);
-			throw new NoSuchBeanException(msg);
+			throw new NoSuchBeanException("Can't find Avatar with id=" + id);
 		}
 	}
 }

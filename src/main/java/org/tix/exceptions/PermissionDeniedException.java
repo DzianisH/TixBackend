@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Created by DzianisH on 04.11.2016.
  */
 @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Permissions denied")
-public class PermissionDeniedException extends RuntimeException {
+public class PermissionDeniedException extends Exception {
 	public PermissionDeniedException(){}
 	public PermissionDeniedException(String msg){
 		super(msg);
