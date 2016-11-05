@@ -10,7 +10,6 @@ import org.tix.exceptions.NoSuchBeanException;
 public interface UserService {
 	boolean isEmailFree(String email);
 	User getUser(String email, String password) throws NoSuchBeanException;
-	boolean validate(User user);
 	User createUser(User user) throws InvalidBeanException;
 	void deleteUser(Integer id) throws NoSuchBeanException;
 }

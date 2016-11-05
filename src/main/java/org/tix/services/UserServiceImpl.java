@@ -42,16 +42,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean validate(User user) {
-		return user != null
-				&& user.getId() != null
-				&& same(user, repository.findOne(user.getId()))
-			;
-	}
-
-	@Override
 	public User createUser(User user) throws InvalidBeanException {
 		if(user == null) throw new InvalidBeanException("User can't be null");
+		//TODO: Add to tests this case
 		user.setId(null);
 		try {
 			return repository.save(user);
