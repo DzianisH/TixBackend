@@ -2,19 +2,19 @@ package org.tix.services;
 
 import org.springframework.stereotype.Service;
 import org.tix.domain.Avatar;
-import org.tix.domain.Session;
+import org.tix.domain.UserSession;
 import org.tix.domain.User;
 import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.exceptions.NotAuthorisedException;
 import org.tix.exceptions.PermissionDeniedException;
+import org.tix.utils.ObjectUtils;
 
 import javax.inject.Inject;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by DzianisH on 04.11.2016.
@@ -24,51 +24,51 @@ import static org.tix.utils.ObjectUtils.same;
 public class UserSessionServiceImpl implements UserSessionService{
 	private final UserService userService;
 	private final AvatarService avatarService;
-	private final Session session;
+	private final UserSession userSession;
 
 	@Inject
-	public UserSessionServiceImpl(UserService userService, AvatarService avatarService, Session session) {
+	public UserSessionServiceImpl(UserService userService, AvatarService avatarService, UserSession userSession) {
 		this.userService = userService;
 		this.avatarService = avatarService;
-		this.session = session;
+		this.userSession = userSession;
 	}
 
 	@Override
 	public User getCurrentUser() throws NotAuthorisedException {
-		User user = session.getUser();
+		User user = userSession.getUser();
 		if(user != null) return user;
 		throw new NotAuthorisedException("You should authenticate first");
 	}
 
 	@Override
 	public boolean isLoggedIn(){
-		return session.getUser() != null;
+		return userSession.getUser() != null;
 	}
 
 	@Override
 	public boolean isAvatared(){
-		return session.getAvatar() != null;
+		return userSession.getAvatar() != null;
 	}
 
 	@Override
 	public User relogin(String email, String password) {
 		User newUser = userService.getUser(email, password);
-		session.setAvatar(null);
-		session.setUser(newUser);
+		userSession.setAvatar(null);
+		userSession.setUser(newUser);
 		return newUser;
 	}
 
 	@Override
 	public void logout() {
-		session.setUser(null);
-		session.setAvatar(null);
+		userSession.setUser(null);
+		userSession.setAvatar(null);
 	}
 
 	@Override
 	public Avatar createAvatar(Avatar avatar)
 			throws InvalidBeanException, BeanAlreadyInUse, NotAuthorisedException {
 		if(!isLoggedIn()) throw new NotAuthorisedException();
-		User user = session.getUser();
+		User user = userSession.getUser();
 
 		if(avatar.getLogin() != null) {
 			throw new InvalidBeanException("login can't be null");
@@ -89,7 +89,7 @@ public class UserSessionServiceImpl implements UserSessionService{
 	@Override
 	public Avatar useAvatar(Avatar avatar){
 		if(isAvatarBelongToCurrentUser(avatar)){
-			session.setAvatar(avatar);
+			userSession.setAvatar(avatar);
 			return avatar;
 		}
 		throw new PermissionDeniedException("Avatar with id=" + id +
@@ -99,25 +99,25 @@ public class UserSessionServiceImpl implements UserSessionService{
 	@Override
 	public boolean isAvatarBelongToCurrentUser(Avatar avatar){
 		User activeUser = getCurrentUser();
-		return same(activeUser, avatar.getUser());
+		return ObjectUtils.equals(activeUser, avatar.getUser());
 	}
 
 	@Override
 	public boolean isAvatarBelongToCurrentUser(Long id){
 		User activeUser = getCurrentUser();
 		Avatar avatar = avatarService.getAvatar(id);
-		return same(activeUser, avatar.getUser());
+		return ObjectUtils.equals(activeUser, avatar.getUser());
 	}
 
 	@Override
 	public Avatar getActiveAvatar() {
-		return session.getAvatar();
+		return userSession.getAvatar();
 	}
 
 	@Override
 	public List<Avatar> getUserAvatarList() {
 		if(!isLoggedIn()) throw new NotAuthorisedException();
-		return avatarService.getUserAvatarList(session.getUser().getId());
+		return avatarService.getUserAvatarList(userSession.getUser().getId());
 	}
 
 	@Override

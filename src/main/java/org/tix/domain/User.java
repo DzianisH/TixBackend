@@ -1,14 +1,11 @@
 package org.tix.domain;
 
-import org.tix.services.UserService;
+import org.tix.utils.ObjectUtils;
 
-import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
@@ -78,8 +75,8 @@ public class User {
 	}
 
 	public boolean equals(User user){
-		return this == user || same(id, user.id)
-				&& same(email, user.email)
-				&& same(password, user.password);
+		return this == user || ObjectUtils.equals(id, user.id)
+				&& ObjectUtils.equals(email, user.email)
+				&& ObjectUtils.equals(password, user.password);
 	}
 }

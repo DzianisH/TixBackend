@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class Session {
+public class UserSession {
 	private User user;
 	private Avatar avatar;
 

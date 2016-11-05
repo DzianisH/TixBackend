@@ -6,11 +6,10 @@ import org.tix.domain.User;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.repositories.UserRepository;
+import org.tix.utils.ObjectUtils;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintDeclarationException;
-
-import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService{
 	public boolean validate(User user) {
 		return user != null
 				&& user.getId() != null
-				&& same(user, repository.findOne(user.getId()))
+				&& ObjectUtils.equals(user, repository.findOne(user.getId()))
 			;
 	}
 
