@@ -9,13 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import java.io.Serializable;
+
 import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 27.10.2016.
  */
 @Entity
-public class Avatar {
+public class Avatar implements Serializable{
 	@Id
 	@GeneratedValue
 	@Column(nullable = false)

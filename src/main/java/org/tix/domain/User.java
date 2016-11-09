@@ -6,13 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import java.io.Serializable;
+
 import static org.tix.utils.ObjectUtils.same;
 
 /**
  * Created by Dzianis_Haurylavets on 04.11.2016.
  */
 @Entity
-public class User {
+public class User implements Serializable {
 	@Id @GeneratedValue
 	@Column(nullable = false)
 	private Integer id;
