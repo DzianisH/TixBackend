@@ -37,6 +37,9 @@ public class DummyDataInitializer {
 	public void initDummyBeans(){
 		LOG.info("Injecting dummy data to " + databaseUri);
 
+		avatarRepository.deleteAll();
+		userRepository.deleteAll();
+
 		List<User> dummyUsers = userRepository.save(Arrays.asList(
 				new User("gavrilovetsden@gmail.com", "1111"),
 				new User("lonlycoder@tut.by", "2222")

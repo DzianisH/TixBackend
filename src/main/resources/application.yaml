@@ -1,14 +1,20 @@
-#spring properties
+#spring properties  org.h2.Driver
+templates:
+  mysql-datasource: &mysql-ds
+    url: jdbc:mysql://localhost/tix?useLegacyDatetimeCode=false&serverTimezone=Europe/Minsk&useSSL=false
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  h2-datasource:  &h2-ds
+    url: jdbc:h2:mem:tix;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+
 spring:
   messagee:
     basename: messages
     cache-seconds: -1
     encoding: UTF-8
-  datasource:
-    url: jdbc:mysql://localhost/tix?useLegacyDatetimeCode=false&serverTimezone=Europe/Minsk&useSSL=false
-    username: root
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource: *mysql-ds
   view: {prefix: /static/, suffix: .html}
 
 logging:
