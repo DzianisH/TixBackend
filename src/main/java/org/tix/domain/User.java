@@ -1,5 +1,7 @@
 package org.tix.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class User implements Serializable {
 	private String password;
 
 	@Transient
+	@JsonIgnore
 	private Avatar activeAvatar;
 
 	// can't deal with serialisation issue ;c

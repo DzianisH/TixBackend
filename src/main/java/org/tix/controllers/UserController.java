@@ -1,12 +1,8 @@
 package org.tix.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.tix.domain.User;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
@@ -22,6 +18,8 @@ import javax.validation.Valid;
  */
 @RestController
 public class UserController {
+	private final Logger LOG = Logger.getLogger(getClass());
+
 	private final UserService userService;
 	private final UserSessionService sessionService;
 
@@ -43,15 +41,15 @@ public class UserController {
 	}
 
 	@PostMapping("/api/user")
-	public ResponseEntity<User> register(@RequestParam @Valid User user) throws InvalidBeanException, NoSuchBeanException {
+	public ResponseEntity<User> register(@RequestBody @Valid User user) throws InvalidBeanException, NoSuchBeanException {
 		user = userService.createUser(user);
-		return login(user.getEmail(), user.getPassword());
+		return login(user);
 	}
 
 	@PostMapping("/api/login")
-	public ResponseEntity<User> login(
-			@RequestParam String email,  @RequestParam String password) throws NoSuchBeanException {
-		return ResponseEntity.ok(sessionService.relogin(email, password));
+	public ResponseEntity<User> login(@RequestBody @Valid User user) throws NoSuchBeanException {
+		LOG.debug("Invoking login for user: " + user);
+		return ResponseEntity.ok(sessionService.relogin(user.getEmail(), user.getPassword()));
 	}
 
 	@PostMapping("/api/logout")
