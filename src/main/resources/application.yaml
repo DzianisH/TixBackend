@@ -20,6 +20,8 @@ spring:
 logging:
   level:
     root: INFO
+    org:
+      tix: DEBUG
 
 server:
   port: ${port:5000}

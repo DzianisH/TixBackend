@@ -31,7 +31,6 @@ public class UserController {
 
 	@GetMapping("/api/user/{email}/free")
 	public ResponseEntity<Boolean> isEmailFree(@PathVariable String email){
-		System.out.println(email);
 		return ResponseEntity.ok(userService.isEmailFree(email));
 	}
 
@@ -42,6 +41,7 @@ public class UserController {
 
 	@PostMapping("/api/user")
 	public ResponseEntity<User> register(@RequestBody @Valid User user) throws InvalidBeanException, NoSuchBeanException {
+		LOG.debug("Invoking register for user: " + user);
 		user = userService.createUser(user);
 		return login(user);
 	}

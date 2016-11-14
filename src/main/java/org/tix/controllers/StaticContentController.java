@@ -33,11 +33,11 @@ public class StaticContentController {
 	@GetMapping("${tix.static.mapping}")
 	public void getIndexPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String path = staticContentRoot + request.getRequestURI();
-		LOG.info("handling request to static: " + path);
+		LOG.debug("handling request to static: " + path);
 
 		File file = new File(path);
 		if(!file.exists() || file.isDirectory()){
-			LOG.info("Can't find path, forwarding to " + path);
+			LOG.debug("Can't find path, forwarding to " + path);
 			path = defaultStaticFile;
 			file = new File(path);
 		}
