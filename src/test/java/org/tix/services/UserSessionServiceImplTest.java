@@ -6,13 +6,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
 import org.tix.domain.Avatar;
 import org.tix.domain.Session;
 import org.tix.domain.User;
 import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.NotAvataredException;
 import org.tix.exceptions.PermissionDeniedException;
 
 import static junit.framework.TestCase.*;
@@ -52,6 +52,15 @@ public class UserSessionServiceImplTest {
 	@Test(expected = NotAuthorisedException.class)
 	public void testGetActiveAvatar_shouldThrowNotAuthorizedExceptionIfNoUserInSession() throws Exception{
 		when(session.getUser()).thenReturn(null);
+		sessionService.getActiveAvatar();
+	}
+
+	@Test(expected = NotAvataredException.class)
+	public void testGetActiveAvatar_shouldThrowNotAvataredExceptionIfNoUserInSession() throws Exception{
+		User mockUser = mock(User.class);
+		when(session.getUser()).thenReturn(mockUser);
+		when(mockUser.getActiveAvatar()).thenReturn(null);
+
 		sessionService.getActiveAvatar();
 	}
 
