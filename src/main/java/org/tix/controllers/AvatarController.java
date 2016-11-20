@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tix.domain.Avatar;
@@ -21,10 +19,10 @@ import org.tix.services.AvatarService;
 import org.tix.services.UserSessionService;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 /**
  * Created by Dzianis_Haurylavets on 27.10.2016.
@@ -50,7 +48,7 @@ public class AvatarController {
 		return ResponseEntity.ok(avatarService.getAvatarList());
 	}
 
-	@PostMapping("/api/avatar")
+	@PostMapping({"/api/avatar", "/api/user/avatar"})
 	public ResponseEntity<Avatar> createAvatar(@RequestParam @Valid Avatar avatar) throws InvalidBeanException, NotAuthorisedException {
 		return ResponseEntity.ok(sessionService.createAvatar(avatar));
 	}
@@ -74,8 +72,7 @@ public class AvatarController {
 		return ResponseEntity.ok(sessionService.getActiveAvatar());
 	}
 
-	// TODO: May be PUT only?
-	@RequestMapping(value = "/api/user/avatar/active", method = {RequestMethod.POST, RequestMethod.PUT})
+	@PutMapping("/api/user/avatar/active")
 	public ResponseEntity<Avatar> setYourAvatar(@RequestParam Long id) throws NoSuchBeanException, PermissionDeniedException {
 		return ResponseEntity.ok(sessionService.useAvatar(id));
 	}

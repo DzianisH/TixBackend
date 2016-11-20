@@ -8,6 +8,7 @@ import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.NotAvataredException;
 import org.tix.exceptions.PermissionDeniedException;
 
 import javax.inject.Inject;
@@ -69,8 +70,9 @@ public class UserSessionServiceImpl implements UserSessionService{
 			throw new InvalidBeanException("login can't be null");
 		}
 		if(avatarService.isAvatarLoginFree(avatar.getLogin())){
+			avatar = avatarService.unsafeCreateAvatar(avatar);
 			avatar.setUser(user);
-			return avatarService.unsafeCreateAvatar(avatar);
+			return avatar;
 		}
 		throw new BeanAlreadyInUse("Avatar with login=" + avatar.getLogin() +
 			"is already used");
@@ -81,7 +83,6 @@ public class UserSessionServiceImpl implements UserSessionService{
 		return useAvatar(avatarService.getAvatar(id));
 	}
 
-	@Override
 	public Avatar useAvatar(Avatar avatar) throws PermissionDeniedException, NotAuthorisedException {
 		if(isAvatarBelongToCurrentUser(avatar)){
 			getCurrentUser().setActiveAvatar(avatar);
@@ -103,8 +104,9 @@ public class UserSessionServiceImpl implements UserSessionService{
 	}
 
 	@Override
-	public Avatar getActiveAvatar() throws NotAuthorisedException {
+	public Avatar getActiveAvatar() throws NotAuthorisedException, NotAvataredException {
 		if(!isLoggedIn()) throw new NotAuthorisedException();
+		if(!isAvatared()) throw new NotAvataredException();
 		return getCurrentUser().getActiveAvatar();
 	}
 

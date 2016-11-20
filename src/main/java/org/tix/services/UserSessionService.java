@@ -6,6 +6,7 @@ import org.tix.exceptions.BeanAlreadyInUse;
 import org.tix.exceptions.InvalidBeanException;
 import org.tix.exceptions.NoSuchBeanException;
 import org.tix.exceptions.NotAuthorisedException;
+import org.tix.exceptions.NotAvataredException;
 import org.tix.exceptions.PermissionDeniedException;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserSessionService {
 	boolean isAvatared() throws NotAuthorisedException;
 
 	User getCurrentUser() throws NotAuthorisedException;
-	Avatar getActiveAvatar() throws NotAuthorisedException;
+	Avatar getActiveAvatar() throws NotAuthorisedException, NotAvataredException;
 	User relogin(String email, String password) throws NoSuchBeanException;
 	void logout();
 
@@ -27,7 +28,6 @@ public interface UserSessionService {
 			throws InvalidBeanException, BeanAlreadyInUse, NotAuthorisedException;
 
 	Avatar useAvatar(Long id) throws NoSuchBeanException, NotAuthorisedException, PermissionDeniedException;
-	Avatar useAvatar(Avatar avatar) throws NotAuthorisedException, PermissionDeniedException;
 
 	boolean isAvatarBelongToCurrentUser(Avatar avatar) throws NotAuthorisedException;
 	boolean isAvatarBelongToCurrentUser(Long id) throws NotAuthorisedException, NoSuchBeanException;
